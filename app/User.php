@@ -33,4 +33,8 @@ public function profile()
 {
     return $this->hasOne('App\Profile');
 }
+public function notifications()
+{
+     return $this->hasMany('App\Notification');
+}
 }

@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Product;
-use App\ImageUpload;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
 
 class ProductController extends Controller
 {
@@ -39,6 +37,26 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function searchbycat($id)
+    {
+          
+//         if(request()->categorie)
+//         {
+//        $products = Product::with('category')->whereHas('category', function ($query) {
+//            $query->where('slug', request()->categorie);
+//        })->orderBy('created_at', 'DESC')->paginate(12);
+
+//    } else {
+        $products = Product::where('category_id' , $id)->orderBy('created_at', 'DESC')->paginate(12);
+       
+   
+    
+    // dd($products);
+        return response()->JSON(['product' => $products], 200);
+
+    
+     
+    }
     public function create()
     {
         //
@@ -124,10 +142,15 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::where('id', $id)->firstorFail();
-
+        
         $cat = $product->category->get();
+        $user = $product->user->get();
+
+        // $user = User::where('id' ,'product_id')->firstorFail();
 
         return response()->json(["product" => $product], 200);
+        // return response()->JSON(['user' => $user->id, 'product' => $products], 200);
+
     }
 
 
